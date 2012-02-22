@@ -9,7 +9,7 @@ module CamarasValenciaEs
       SurveillanceCamera.get('infocamaras.asp', query: { idgrupo: post_id})
     end
 
-    def find(id)
+    def self.find(id)
       SurveillanceCamera.get('image.asp', query: { idcamara: post_id})
     end
   end
