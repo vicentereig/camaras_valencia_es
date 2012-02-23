@@ -1,0 +1,37 @@
+h1. camaras_valencia_es: Valencia's Traffic CCTV API Client
+
+This is just a Ruby client to <http://camaras.valencia.es> which allows to access the public data related to the CCTV monitoring Valencia's streets.
+This library aims to make easier to gather and work with public data released by the Spanish Regional Goverment.
+
+h2. Installation
+
+<pre lang="bash">
+  $ gem install camaras_valencia_es
+</pre>
+
+Or if you are using bundler:
+
+<pre lang="ruby">
+  gem 'camaras_valencia_es'
+</pre>
+
+h2. Usage
+
+Docs are a work in progress.
+
+<pre lang="ruby">
+  posts = CamarasValenciaEs::SurveillancePosts.all
+  posts.cameras.each do |camera|
+    puts camera.id
+  end
+</pre>
+
+h2. Software License
+
+Copyright (c) 2012 <Vicente Reig Rincón de Arellano>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
