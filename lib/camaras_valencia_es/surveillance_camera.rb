@@ -1,3 +1,5 @@
+require 'httparty'
+
 module CamarasValenciaEs
   class SurveillanceCamera
     include HTTParty
