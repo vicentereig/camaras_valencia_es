@@ -21,8 +21,18 @@ Docs are a work in progress.
 
 <pre lang="ruby">
   posts = CamarasValenciaEs::SurveillancePosts.all
-  posts.cameras.each do |camera|
-    puts camera.id
+  posts.each do |post|
+    puts post.id
+    puts post.x # UTM coordinates properly parsed to Float
+    puts post.y
+
+    post.cameras.each do |camera|
+      puts camera.id
+      puts camera.x
+      puts camera.y
+      puts camera.source
+      puts camera.target
+    end
   end
 </pre>
 
