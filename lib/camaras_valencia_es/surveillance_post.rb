@@ -5,11 +5,12 @@ require 'json'
 
 module CamarasValenciaEs
   class SurveillancePost
-    attr_accessor :id, :x, :y, :icon_type
+    attr_accessor :id, :x, :y, :icon_type, :street_name, :camera_count, :neighbourhood
 
     def initialize(id, x, y, icon_type)
       @id, @x, @y, @icon_type = id, x, y, icon_type
     end
+
     #attribute :id,        type: String,        match: 'idgrupo'
     #attribute :x,         type: defuck_coords, match: 'latitud'
     #attribute :y,         type: defuck_coords, match: 'longitud'
@@ -38,13 +39,21 @@ module CamarasValenciaEs
     headers 'Content-type' => 'application/json'
 
     def self.all(opts={})
-      response_body = SurveillancePost.get('/infogrupos.asp', query: SurveillancePost.query_params(opts.delete(:id))).body
+      response_body = SurveillancePost.get('/infogrupos.asp', query: SurveillancePost.query_params(opts.delete(:bbox))).body
       self.parse(response_body)
     end
 
-    # MAESTRO%20RODRIGO%20-%20CAMP%20DEL%20TURIA,3
-    def self.find(id)
-      SurveillancePost.get('infogrupo.asp', query: { id: id} )
+    def find_street_name_and_neighbourhood_and_camera_count
+      response_body      = SurveillancePost.get('/infogrupo.asp', query: {idgrupo: id}).body
+      response_body      = response_body.split(/,/)
+      self.camera_count  = response_body.pop.to_i
+      response_body      = response_body.first.split(/-/)
+      self.neighbourhood = CGI.unescape response_body.pop || ""
+      self.street_name   = CGI.unescape response_body.pop || ""
+    end
+
+    def cameras
+
     end
 
     protected
