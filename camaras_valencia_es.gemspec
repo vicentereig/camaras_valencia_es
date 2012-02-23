@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Vicente Reig Rincón de Arellano"]
   s.email       = ["vicente.reig@gmail.com"]
   s.homepage    = "http://github.com/vicentereig/camaras_valencia_es"
-  s.summary     = %q{TODO: A client to access http://camaras.valencia.es traffic CCTV information.}
-  s.description = %q{TODO: A RESTful wrapper to the RESTful-like API at http://camaras.valencia.es to access traffic CCTV information.}
+  s.summary     = %q{A client to access http://camaras.valencia.es traffic CCTV information.}
+  s.description = %q{A RESTful wrapper to the RESTful-like API at http://camaras.valencia.es to access traffic CCTV information.}
 
   s.rubyforge_project = "camaras_valencia_es"
 
