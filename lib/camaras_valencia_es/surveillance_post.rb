@@ -24,9 +24,9 @@ module CamarasValenciaEs
       }
 
       serializable = JSON.parse(json)
-      # I know this JSON structure is fucking weird just for representing
-      # a simple array of objects.
-      # Also what they call latitude, and longitude is in fact UTM X/Y.
+      # This JSON structure is fucking weird just for representing
+      # a simple array of objects. An Array of Hashe would have been more than enough.
+      # What they call latitude, and longitude is in fact UTM X/Y.
       attrs = serializable['datos']
       attrs['idgrupo'].collect.with_index { |idgrupo, i|
         x, y = defuck_coords.call(attrs['latitud'][i]), defuck_coords.call(attrs['longitud'][i])
@@ -53,7 +53,7 @@ module CamarasValenciaEs
     end
 
     def cameras
-
+      @cameras ||= SurveillanceCamera.all(self.id)
     end
 
     protected
