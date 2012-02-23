@@ -1,6 +1,6 @@
 h1. camaras_valencia_es: Valencia's Traffic CCTV API Client
 
-This is just a Ruby client to <http://camaras.valencia.es> which allows to access the public data related to the CCTV monitoring Valencia's streets.
+This is just a Ruby client to "http://camaras.valencia.es":http://camaras.valencia.es which allows to access the public data related to the CCTV monitoring Valencia's streets.
 This library aims to make easier to gather and work with public data released by the Spanish Regional Goverment.
 
 h2. Installation
