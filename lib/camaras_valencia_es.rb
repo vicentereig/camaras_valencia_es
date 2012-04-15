@@ -1,7 +1,5 @@
 require 'camaras_valencia_es/version'
+require 'camaras_valencia_es/util/v8_unescaper'
+require 'camaras_valencia_es/util/lat_lon_converter'
 require 'camaras_valencia_es/surveillance_post'
 require 'camaras_valencia_es/surveillance_camera'
-
-module CamarasValenciaEs
-  # Your code goes here...
-end

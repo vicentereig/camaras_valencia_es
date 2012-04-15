@@ -3,12 +3,17 @@ require 'httparty'
 require 'cgi'
 require 'json'
 
+
 module CamarasValenciaEs
   class SurveillancePost
+    include CamarasValenciaEs::Util::V8Unescaper
+    include CamarasValenciaEs::Util::LatLonConverter
+
     attr_accessor :id, :x, :y, :icon_type, :street_name, :camera_count, :neighbourhood
 
     def initialize(id, x, y, icon_type)
       @id, @x, @y, @icon_type = id, x, y, icon_type
+      convert_to_lat_long
     end
 
     #attribute :id,        type: String,        match: 'idgrupo'
@@ -16,7 +21,7 @@ module CamarasValenciaEs
     #attribute :y,         type: defuck_coords, match: 'longitud'
     #attribute :icon_type, type: String,        match: 'tipoicono'
     #
-    #parser WhyDidntTheyUseProperJSONParser
+    #parser WhyDidntTheyUseProperJSON
 
     def self.parse(json)
       defuck_coords = ->(v) {
@@ -24,12 +29,12 @@ module CamarasValenciaEs
       }
 
       serializable = JSON.parse(json)
-      # This JSON structure is fucking weird just for representing
+      # This JSON structure is fucking weird just to implement
       # a simple array of objects. An Array of Hashe would have been more than enough.
       # What they call latitude, and longitude is in fact UTM X/Y.
       attrs = serializable['datos']
       attrs['idgrupo'].collect.with_index { |idgrupo, i|
-        x, y = defuck_coords.call(attrs['latitud'][i]), defuck_coords.call(attrs['longitud'][i])
+        x, y = defuck_coords.call(attrs['longitud'][i]), defuck_coords.call(attrs['latitud'][i])
         self.new(attrs['idgrupo'][i], x, y, attrs['tipoicono'][i])
       }
     end
@@ -43,23 +48,43 @@ module CamarasValenciaEs
       self.parse(response_body)
     end
 
-    def find_street_name_and_neighbourhood_and_camera_count
+    def load_attributes
       response_body      = SurveillancePost.get('/infogrupo.asp', query: {idgrupo: id}).body
-      response_body      = response_body.split(/,/)
-      self.camera_count  = response_body.pop.to_i
-      response_body      = response_body.first.split(/-/)
-      self.neighbourhood = CGI.unescape response_body.pop || ""
-      self.street_name   = CGI.unescape response_body.pop || ""
+      body_parts         = response_body.split(/,/)
+      self.camera_count  = body_parts.pop.to_i
+      body_parts         = body_parts.first.split(/-/)
+
+      self.neighbourhood = unescape(body_parts.pop)
+      self.street_name   = unescape(body_parts.pop)
+
+      response_body
     end
 
     def cameras
       @cameras ||= SurveillanceCamera.all(self.id)
     end
 
-    protected
-    def self.query_params(bbox)
-      return {} unless bbox.present?
-      {lat1: bbox[0], long1: bbox[1], lat2: bbox[2], long2: bbox[3]}
+    def to_attributes
+      {
+        remote_id: self.id,
+        location: [self.latlon.y, self.latlon.x],
+        address:
+        {
+          street_name:        (self.street_name || "").strip,
+          neighbourhood_name: (self.neighbourhood || "").strip
+        },
+        surveillance_cameras: self.cameras_to_attributes
+      }
     end
+
+    def cameras_to_attributes
+      self.cameras.map(&:to_attributes)
+    end
+
+    protected
+      def self.query_params(bbox)
+        return {} unless bbox.present?
+        {lat1: bbox[0], long1: bbox[1], lat2: bbox[2], long2: bbox[3]}
+      end
   end
 end
