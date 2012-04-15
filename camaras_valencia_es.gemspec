@@ -23,5 +23,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "httparty"
   s.add_runtime_dependency "therubyracer"
   s.add_runtime_dependency "proj4rb"
-  #s.add_runtime_dependency "active_support", ">= 3.0.0"
+  s.add_runtime_dependency "active_support", ">= 3.0"
 end
